@@ -1,21 +1,34 @@
 'use strict';
 
 const p = document.querySelector('p');
+const status = document.querySelector('.status');
 p.textContent = 'Hello from app.js';
 
-if (typeof document.hasStorageAccess === 'function') {
-  console.log('Your browser supports Storage Access API');
-  document.hasStorageAccess().then((res) => {
-    p.textContent = 'document.hasStorageAccess returns ' + res;
+if (window === window.parent) {
+  document.cookie = 'name=bar';
+} else {
+  if (typeof document.hasStorageAccess === 'function') {
+    status.textContent = 'Your browser supports Storage Access API';
+    document.hasStorageAccess().then((res) => {
+      p.textContent = 'document.hasStorageAccess returns ' + res;
+    });
+  } else {
+    status.textContent = 'Your browser does not support Storage Access API';
+  }
+  console.log('cookie is ' + document.cookie);
+
+  const button = document.querySelector('button');
+  button.addEventListener('click', () => {
+    if (typeof document.requestStorageAccess === 'function') {
+      document.requestStorageAccess().then(
+        () => {
+          console.log('cookie is ' + document.cookie);
+          p.textContent = 'requestStorageAccess successed!';
+        },
+        () => p.textContent = 'requestStorageAccess failed!'
+      );
+    }
   });
 }
 
-const button = document.querySelector('button');
-button.addEventListener('click', () => {
-  if (typeof document.requestStorageAccess === 'function') {
-    document.requestStorageAccess().then(
-      () => p.textContent = 'requestStorageAccess successed!',
-      () => p.textContent = 'requestStorageAccess failed!'
-    );
-  }
-});
+
