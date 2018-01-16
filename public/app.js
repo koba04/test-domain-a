@@ -5,6 +5,7 @@ const status = document.querySelector('.status');
 p.textContent = 'Hello from app.js';
 
 if (window === window.parent) {
+  status.textContent = 'This is not in iframe so I set a cookie name=bar';
   document.cookie = 'name=bar';
 } else {
   if (typeof document.hasStorageAccess === 'function') {
