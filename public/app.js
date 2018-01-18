@@ -6,7 +6,7 @@ p.textContent = 'Hello from app.js';
 
 if (window === window.parent) {
   status.textContent = 'This is not in iframe so I set a value into cookie and localStorage';
-  document.cookie = 'name=bar';
+  document.cookie = `name=bar; max-age=${60 * 60 * 24 * 10}`;
   localStorage.setItem('name', 'bar');
 } else {
   if (typeof document.hasStorageAccess === 'function') {
